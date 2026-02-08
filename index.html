@@ -2,12 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a1628">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <title>F&G Annuities & Life — Carrier Summary | MMT Financial & Insurance</title>
   <meta name="description" content="F&G Annuities & Life carrier summary prepared by MMT Financial & Insurance. IUL, FIA, and MYGA product overview.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    /* ─── CSS Variables ─── */
     :root {
       --navy: #0a1628;
       --deep-blue: #132744;
@@ -25,41 +30,106 @@
       --shadow-sm: 0 1px 3px rgba(10,22,40,0.06);
       --shadow-md: 0 4px 16px rgba(10,22,40,0.08);
       --shadow-lg: 0 12px 40px rgba(10,22,40,0.12);
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-left: env(safe-area-inset-left, 0px);
+      --safe-right: env(safe-area-inset-right, 0px);
+      --section-pad-x: 32px;
+      --section-pad-y: 72px;
     }
 
+    /* ─── Reset ─── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
     body {
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       color: var(--text-primary);
       line-height: 1.7;
       font-weight: 400;
       background: var(--off-white);
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      min-height: 100vh;
+      min-height: 100dvh;
     }
 
-    h1, h2, h3, h4 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.25; }
+    img { max-width: 100%; height: auto; display: block; }
+    h1, h2, h3, h4 { font-family: 'DM Serif Display', Georgia, 'Times New Roman', serif; font-weight: 400; line-height: 1.25; }
 
-    /* ─── Top Bar ─── */
-    .top-bar {
+    /* ─── Scroll Reveal ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s cubic-bezier(0.23,1,0.32,1), transform 0.7s cubic-bezier(0.23,1,0.32,1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Sticky Navigation ─── */
+    .sticky-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
       background: var(--navy);
-      color: var(--accent-gold-light);
-      font-size: 0.78rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 10px 0;
-      text-align: center;
-      font-weight: 500;
+      border-bottom: 1px solid rgba(200,164,86,0.15);
+      padding: 0 var(--section-pad-x);
+      padding-top: var(--safe-top);
+      transition: box-shadow 0.3s;
     }
-    .top-bar span { opacity: 0.6; margin: 0 8px; }
+    .sticky-nav.scrolled {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    }
+    .sticky-nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+    }
+    .nav-brand {
+      font-family: 'DM Serif Display', serif;
+      color: var(--white);
+      font-size: 1rem;
+      white-space: nowrap;
+    }
+    .nav-motto {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent-gold);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.65);
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+    .nav-links a:hover, .nav-links a:focus-visible {
+      color: var(--white);
+      background: rgba(255,255,255,0.08);
+    }
 
     /* ─── Hero ─── */
     .hero {
       background: var(--gradient-hero);
       color: var(--white);
-      padding: 80px 0 70px;
+      padding: 72px 0 64px;
       position: relative;
       overflow: hidden;
     }
@@ -69,6 +139,7 @@
       inset: 0;
       background: radial-gradient(ellipse at 80% 20%, rgba(200,164,86,0.1) 0%, transparent 60%),
                   radial-gradient(ellipse at 20% 80%, rgba(200,164,86,0.06) 0%, transparent 50%);
+      pointer-events: none;
     }
     .hero::after {
       content: '';
@@ -82,7 +153,7 @@
     .hero-inner {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 0 32px;
+      padding: 0 var(--section-pad-x);
       position: relative;
       z-index: 1;
     }
@@ -97,11 +168,11 @@
       text-transform: uppercase;
       padding: 6px 18px;
       border-radius: 100px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
     .hero h1 {
-      font-size: clamp(2.4rem, 5vw, 3.6rem);
-      margin-bottom: 18px;
+      font-size: clamp(2rem, 5vw, 3.6rem);
+      margin-bottom: 16px;
       color: var(--white);
     }
     .hero h1 em {
@@ -109,7 +180,7 @@
       color: var(--accent-gold-light);
     }
     .hero-sub {
-      font-size: 1.1rem;
+      font-size: clamp(0.95rem, 2.2vw, 1.1rem);
       line-height: 1.75;
       color: rgba(255,255,255,0.7);
       max-width: 680px;
@@ -122,14 +193,14 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 0;
       max-width: 1100px;
-      margin: -36px auto 0;
-      padding: 0 32px;
+      margin: -32px auto 0;
+      padding: 0 var(--section-pad-x);
       position: relative;
       z-index: 2;
     }
     .stat-card {
       background: var(--card-bg);
-      padding: 30px 28px;
+      padding: 28px 20px;
       text-align: center;
       border: 1px solid var(--border);
       opacity: 0;
@@ -144,28 +215,26 @@
     .stat-card + .stat-card { border-left: none; }
     .stat-number {
       font-family: 'DM Serif Display', serif;
-      font-size: 2rem;
+      font-size: clamp(1.5rem, 3vw, 2rem);
       color: var(--navy);
       margin-bottom: 4px;
     }
     .stat-label {
-      font-size: 0.78rem;
+      font-size: clamp(0.65rem, 1.5vw, 0.78rem);
       color: var(--text-light);
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.06em;
       font-weight: 500;
     }
 
-    /* ─── Container ─── */
+    /* ─── Container & Sections ─── */
     .container {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 0 32px;
+      padding: 0 var(--section-pad-x);
     }
-
-    /* ─── Section ─── */
     .section {
-      padding: 72px 0;
+      padding: var(--section-pad-y) 0;
     }
     .section-label {
       font-size: 0.72rem;
@@ -176,19 +245,19 @@
       margin-bottom: 12px;
     }
     .section h2 {
-      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
       color: var(--navy);
       margin-bottom: 16px;
     }
     .section-intro {
       color: var(--text-secondary);
-      font-size: 1.05rem;
+      font-size: clamp(0.92rem, 2vw, 1.05rem);
       max-width: 660px;
-      margin-bottom: 40px;
+      margin-bottom: 36px;
       font-weight: 300;
     }
 
-    /* ─── Key Facts ─── */
+    /* ─── Key Facts Grid ─── */
     .facts-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -200,9 +269,9 @@
     }
     .fact-item {
       background: var(--card-bg);
-      padding: 24px 30px;
+      padding: 22px 24px;
       display: flex;
-      gap: 16px;
+      gap: 14px;
       align-items: flex-start;
     }
     .fact-icon {
@@ -217,7 +286,7 @@
       font-size: 1rem;
     }
     .fact-label {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--text-light);
@@ -227,8 +296,9 @@
     .fact-value {
       font-weight: 600;
       color: var(--text-primary);
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       line-height: 1.5;
+      word-break: break-word;
     }
 
     /* ─── Ratings Table ─── */
@@ -242,38 +312,51 @@
     .ratings-header {
       background: var(--navy);
       color: var(--white);
-      padding: 22px 30px;
+      padding: 20px 24px;
       display: flex;
       align-items: center;
       gap: 12px;
     }
-    .ratings-header h3 { font-size: 1.2rem; color: var(--white); }
+    .ratings-header h3 { font-size: 1.15rem; color: var(--white); }
     .shield-icon {
       width: 36px; height: 36px;
       background: rgba(200,164,86,0.2);
       border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
       font-size: 1.1rem;
+      flex-shrink: 0;
     }
+    .table-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .table-scroll::-webkit-scrollbar { height: 4px; }
+    .table-scroll::-webkit-scrollbar-track { background: transparent; }
+    .table-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
     table {
       width: 100%;
       border-collapse: collapse;
+      min-width: 480px;
     }
     thead th {
       text-align: left;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--text-light);
       font-weight: 600;
-      padding: 16px 30px;
+      padding: 14px 24px;
       border-bottom: 2px solid var(--border);
       background: var(--off-white);
+      white-space: nowrap;
     }
     tbody td {
-      padding: 18px 30px;
+      padding: 16px 24px;
       border-bottom: 1px solid var(--border);
-      font-size: 0.95rem;
+      font-size: 0.92rem;
+      white-space: nowrap;
     }
     tbody tr:last-child td { border-bottom: none; }
     tbody tr:hover { background: rgba(200,164,86,0.04); }
@@ -300,20 +383,49 @@
       width: 7px; height: 7px;
       border-radius: 50%;
       background: #2d8659;
+      flex-shrink: 0;
     }
     .ratings-note {
-      padding: 14px 30px;
+      padding: 14px 24px;
       background: var(--off-white);
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: var(--text-light);
       font-style: italic;
     }
 
-    /* ─── Products ─── */
+    /* ─── Rating Cards (Mobile Alt) ─── */
+    .rating-cards-mobile { display: none; }
+    .rating-card-m {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .rating-card-m + .rating-card-m { margin-top: 10px; }
+    .rating-card-m-badge {
+      min-width: 52px;
+      text-align: center;
+    }
+    .rating-card-m-info { flex: 1; }
+    .rating-card-m-agency {
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+    .rating-card-m-meta {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    /* ─── Products Grid ─── */
     .products-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 24px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
     }
     .product-card {
       background: var(--card-bg);
@@ -322,44 +434,45 @@
       overflow: hidden;
       box-shadow: var(--shadow-sm);
       transition: box-shadow 0.3s, transform 0.3s;
+      display: flex;
+      flex-direction: column;
     }
-    .product-card:hover {
-      box-shadow: var(--shadow-lg);
-      transform: translateY(-3px);
+    @media (hover: hover) {
+      .product-card:hover {
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-3px);
+      }
     }
     .product-card-header {
-      padding: 26px 26px 18px;
+      padding: 24px 22px 16px;
       border-bottom: 1px solid var(--border);
     }
     .product-tag {
       display: inline-block;
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       text-transform: uppercase;
       letter-spacing: 0.14em;
       font-weight: 700;
       padding: 4px 12px;
       border-radius: 100px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .tag-iul { background: #e8f0fe; color: #1a56db; }
     .tag-fia { background: #ecfdf5; color: #047857; }
     .tag-myga { background: #fef3e2; color: #b45309; }
     .product-card-header h4 {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       color: var(--navy);
     }
     .product-card-body {
-      padding: 20px 26px 26px;
+      padding: 18px 22px 24px;
+      flex: 1;
     }
-    .product-card-body ul {
-      list-style: none;
-      padding: 0;
-    }
+    .product-card-body ul { list-style: none; padding: 0; }
     .product-card-body li {
-      padding: 7px 0;
-      padding-left: 20px;
+      padding: 6px 0 6px 20px;
       position: relative;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: var(--text-secondary);
       line-height: 1.55;
     }
@@ -367,30 +480,35 @@
       content: '';
       position: absolute;
       left: 0;
-      top: 14px;
+      top: 13px;
       width: 6px; height: 6px;
       border-radius: 50%;
       background: var(--accent-gold);
     }
 
-    /* ─── Why F&G ─── */
+    /* ─── Why F&G Grid ─── */
     .why-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 18px;
     }
     .why-item {
       background: var(--card-bg);
-      padding: 28px 28px;
+      padding: 24px;
       border-radius: 12px;
       border: 1px solid var(--border);
       display: flex;
       gap: 16px;
       align-items: flex-start;
       box-shadow: var(--shadow-sm);
-      transition: box-shadow 0.3s;
+      transition: box-shadow 0.3s, transform 0.2s;
     }
-    .why-item:hover { box-shadow: var(--shadow-md); }
+    @media (hover: hover) {
+      .why-item:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-2px);
+      }
+    }
     .why-icon {
       width: 42px; height: 42px;
       background: var(--navy);
@@ -400,12 +518,12 @@
       font-size: 1.1rem;
     }
     .why-item h4 {
-      font-size: 1rem;
+      font-size: 0.98rem;
       color: var(--navy);
       margin-bottom: 4px;
     }
     .why-item p {
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       color: var(--text-secondary);
       line-height: 1.6;
     }
@@ -414,7 +532,7 @@
     .bottom-line {
       background: var(--gradient-hero);
       color: var(--white);
-      padding: 64px 0;
+      padding: 60px 0;
       position: relative;
       overflow: hidden;
     }
@@ -423,6 +541,7 @@
       position: absolute;
       inset: 0;
       background: radial-gradient(ellipse at 50% 50%, rgba(200,164,86,0.08) 0%, transparent 70%);
+      pointer-events: none;
     }
     .bottom-line-inner {
       position: relative;
@@ -432,13 +551,13 @@
       margin: 0 auto;
     }
     .bottom-line h2 {
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
       color: var(--white);
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
     .bottom-line p {
       color: rgba(255,255,255,0.75);
-      font-size: 1.05rem;
+      font-size: clamp(0.92rem, 2vw, 1.05rem);
       line-height: 1.8;
       font-weight: 300;
     }
@@ -446,7 +565,7 @@
       width: 60px;
       height: 2px;
       background: var(--accent-gold);
-      margin: 28px auto;
+      margin: 24px auto;
       border: none;
     }
 
@@ -454,22 +573,23 @@
     footer {
       background: var(--navy);
       color: rgba(255,255,255,0.6);
-      padding: 48px 0 32px;
+      padding: 44px 0 28px;
+      padding-bottom: calc(28px + var(--safe-bottom));
     }
     .footer-inner {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 0 32px;
+      padding: 0 var(--section-pad-x);
       text-align: center;
     }
     .footer-brand {
       font-family: 'DM Serif Display', serif;
-      font-size: 1.35rem;
+      font-size: 1.3rem;
       color: var(--white);
       margin-bottom: 6px;
     }
     .footer-motto {
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.2em;
       color: var(--accent-gold);
@@ -477,7 +597,7 @@
       margin-bottom: 20px;
     }
     .footer-names {
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       color: rgba(255,255,255,0.8);
       margin-bottom: 4px;
     }
@@ -489,17 +609,21 @@
     .footer-contact {
       font-size: 0.85rem;
       margin-bottom: 6px;
+      line-height: 2;
     }
     .footer-contact a {
       color: var(--accent-gold-light);
       text-decoration: none;
+      transition: color 0.2s;
+      padding: 6px 2px;
+      display: inline-block;
     }
-    .footer-contact a:hover { text-decoration: underline; }
+    .footer-contact a:hover { text-decoration: underline; color: var(--white); }
     .footer-license {
-      margin-top: 24px;
-      padding-top: 24px;
+      margin-top: 22px;
+      padding-top: 22px;
       border-top: 1px solid rgba(255,255,255,0.08);
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: rgba(255,255,255,0.35);
       line-height: 1.7;
     }
@@ -510,130 +634,315 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ─── Responsive ─── */
-    @media (max-width: 900px) {
-      .stats-row { grid-template-columns: repeat(2, 1fr); margin-top: -28px; }
-      .stat-card:first-child { border-radius: 12px 0 0 0; }
-      .stat-card:nth-child(2) { border-radius: 0 12px 0 0; }
-      .stat-card:nth-child(3) { border-radius: 0 0 0 12px; border-top: none; }
-      .stat-card:nth-child(4) { border-radius: 0 0 12px 0; border-top: none; }
-      .stat-card:nth-child(3) { border-left: 1px solid var(--border); }
-      .products-grid { grid-template-columns: 1fr; }
-      .why-grid { grid-template-columns: 1fr; }
-      .facts-grid { grid-template-columns: 1fr; }
+    /* ─── Back to Top Button ─── */
+    .back-to-top {
+      position: fixed;
+      bottom: calc(24px + var(--safe-bottom));
+      right: 24px;
+      width: 48px; height: 48px;
+      background: var(--navy);
+      color: var(--accent-gold-light);
+      border: 1px solid rgba(200,164,86,0.3);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 90;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(12px);
+      transition: opacity 0.3s, transform 0.3s, background 0.2s;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      -webkit-tap-highlight-color: transparent;
     }
-    @media (max-width: 600px) {
-      .stats-row { grid-template-columns: 1fr 1fr; }
+    .back-to-top.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .back-to-top:hover { background: var(--deep-blue); }
+
+    /* ════════════════════════════════
+       RESPONSIVE BREAKPOINTS
+       ════════════════════════════════ */
+
+    /* ─── Tablet Landscape (≤1024) ─── */
+    @media (max-width: 1024px) {
+      .products-grid { grid-template-columns: 1fr 1fr; }
+      .products-grid .product-card:last-child {
+        grid-column: 1 / -1;
+        max-width: 520px;
+        margin: 0 auto;
+        width: 100%;
+      }
+    }
+
+    /* ─── Tablet Portrait (≤768) ─── */
+    @media (max-width: 768px) {
+      :root {
+        --section-pad-x: 20px;
+        --section-pad-y: 52px;
+      }
+
+      .nav-links { display: none; }
+      .sticky-nav-inner { height: 48px; }
+
       .hero { padding: 56px 0 50px; }
-      .section { padding: 48px 0; }
-      thead th, tbody td { padding: 12px 16px; font-size: 0.85rem; }
+      .hero-badge { margin-bottom: 18px; padding: 5px 14px; font-size: 0.68rem; }
+
+      .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+        margin-top: -24px;
+      }
+      .stat-card { padding: 22px 16px; }
+      .stat-card:first-child { border-radius: 12px 0 0 0; }
+      .stat-card:nth-child(2) { border-radius: 0 12px 0 0; border-left: none; }
+      .stat-card:nth-child(3) { border-radius: 0 0 0 12px; border-top: none; }
+      .stat-card:nth-child(4) { border-radius: 0 0 12px 0; border-top: none; border-left: none; }
+
+      .facts-grid { grid-template-columns: 1fr; }
+
+      .products-grid { grid-template-columns: 1fr; }
+      .products-grid .product-card:last-child {
+        grid-column: auto;
+        max-width: none;
+      }
+
+      .why-grid { grid-template-columns: 1fr; }
+
+      /* Mobile rating cards instead of table */
+      .table-scroll { display: none; }
+      .rating-cards-mobile { display: block; padding: 16px; }
+
+      .footer-names {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .footer-names .sep-pipe { display: none; }
+    }
+
+    /* ─── Mobile (≤480) ─── */
+    @media (max-width: 480px) {
+      :root {
+        --section-pad-x: 16px;
+        --section-pad-y: 40px;
+      }
+
+      .sticky-nav-inner { height: 44px; }
+      .nav-brand { font-size: 0.88rem; }
+      .nav-motto { font-size: 0.58rem; letter-spacing: 0.12em; }
+
+      .hero { padding: 44px 0 40px; }
+      .hero h1 { margin-bottom: 12px; }
+      .hero-sub { font-size: 0.92rem; line-height: 1.7; }
+
+      .stats-row { margin-top: -20px; padding: 0 var(--section-pad-x); }
+      .stat-card { padding: 18px 10px; }
+      .stat-number { font-size: 1.35rem; }
+      .stat-label { font-size: 0.62rem; letter-spacing: 0.04em; }
+
+      .fact-item { padding: 16px; gap: 12px; }
+      .fact-icon { width: 34px; height: 34px; font-size: 0.9rem; }
+      .fact-value { font-size: 0.85rem; }
+
+      .ratings-header { padding: 16px; }
+      .ratings-header h3 { font-size: 1rem; }
+      .ratings-note { padding: 12px 16px; font-size: 0.72rem; }
+
+      .rating-card-m { padding: 16px; gap: 12px; }
+      .rating-badge { font-size: 0.8rem; padding: 3px 12px; }
+
+      .product-card-header { padding: 20px 18px 14px; }
+      .product-card-body { padding: 14px 18px 20px; }
+      .product-card-body li { font-size: 0.85rem; padding-left: 18px; }
+
+      .why-item { padding: 20px; gap: 14px; }
+      .why-icon { width: 38px; height: 38px; font-size: 1rem; }
+      .why-item h4 { font-size: 0.92rem; }
+      .why-item p { font-size: 0.82rem; }
+
+      .bottom-line { padding: 44px 0; }
+      .bottom-line p { font-size: 0.9rem; line-height: 1.75; }
+
+      .footer-inner { padding: 0 var(--section-pad-x); }
+      .footer-brand { font-size: 1.15rem; }
+      .footer-names { font-size: 0.84rem; }
+      .footer-contact { font-size: 0.8rem; }
+      .footer-contact a { padding: 8px 4px; }
+      .footer-license { font-size: 0.68rem; }
+
+      .back-to-top { width: 44px; height: 44px; bottom: calc(16px + var(--safe-bottom)); right: 16px; }
+    }
+
+    /* ─── Small Mobile (≤360) ─── */
+    @media (max-width: 360px) {
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .stat-card { padding: 14px 8px; }
+      .stat-number { font-size: 1.2rem; }
+
+      .footer-contact {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .footer-contact .sep { display: none; }
+    }
+
+    /* ─── Large Desktop (≥1400) ─── */
+    @media (min-width: 1400px) {
+      .hero { padding: 96px 0 84px; }
+      .stats-row { margin-top: -40px; }
+      :root { --section-pad-y: 88px; }
+    }
+
+    /* ─── Print ─── */
+    @media print {
+      .sticky-nav, .back-to-top { display: none !important; }
+      .hero { padding: 32px 0; }
+      .section { padding: 24px 0; break-inside: avoid; }
+      .reveal { opacity: 1 !important; transform: none !important; }
+      body { background: white; }
+    }
+
+    /* ─── Reduced Motion ─── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* ─── High Contrast ─── */
+    @media (prefers-contrast: high) {
+      :root {
+        --text-secondary: #2a3240;
+        --text-light: #4a5060;
+        --border: #c0c4cc;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Bar -->
-  <div class="top-bar">
-    MMT Financial and Insurance <span>|</span> Freedom Equity Group <span>|</span> Educate. Protect. Wealth.
-  </div>
+  <!-- Sticky Nav -->
+  <nav class="sticky-nav" id="stickyNav" role="navigation" aria-label="Main navigation">
+    <div class="sticky-nav-inner">
+      <div>
+        <div class="nav-brand">MMT Financial and Insurance</div>
+        <div class="nav-motto">Educate. Protect. Wealth.</div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#ratings">Ratings</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#why">Why F&amp;G</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
 
   <!-- Hero -->
   <section class="hero">
     <div class="hero-inner">
       <div class="hero-badge">Carrier Summary</div>
-      <h1>F&G Annuities <em>&</em> Life</h1>
+      <h1>F&amp;G Annuities <em>&amp;</em> Life</h1>
       <p class="hero-sub">
         A leading provider of insurance solutions with 65+ years of protecting policyholders.
-        Originally incorporated in 1959, F&G has safeguarded more than 700,000 people across the United States
+        Originally incorporated in 1959, F&amp;G has safeguarded more than 700,000 people across the United States
         with life and annuity products.
       </p>
     </div>
   </section>
 
   <!-- Stats Row -->
-  <div class="stats-row">
-    <div class="stat-card">
+  <div class="stats-row" role="list" aria-label="Key statistics">
+    <div class="stat-card" role="listitem">
       <div class="stat-number">$71B+</div>
       <div class="stat-label">Assets Under Mgmt</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" role="listitem">
       <div class="stat-number">$15.3B</div>
       <div class="stat-label">2024 Gross Sales</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" role="listitem">
       <div class="stat-number">700K+</div>
       <div class="stat-label">Policyholders</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" role="listitem">
       <div class="stat-number">65+</div>
       <div class="stat-label">Years Since 1959</div>
     </div>
   </div>
 
   <!-- Key Facts -->
-  <section class="section">
+  <section class="section" id="overview">
     <div class="container">
-      <div class="section-label">Company Overview</div>
-      <h2>Key Facts</h2>
-      <p class="section-intro">
-        F&G is a majority-owned subsidiary of Fidelity National Financial (NYSE: FNF), with Blackstone
-        serving as a strategic partner managing a significant portion of F&G's investment portfolio.
-      </p>
-      <div class="facts-grid">
+      <div class="reveal">
+        <div class="section-label">Company Overview</div>
+        <h2>Key Facts</h2>
+        <p class="section-intro">
+          F&amp;G is a majority-owned subsidiary of Fidelity National Financial (NYSE:&nbsp;FNF), with Blackstone
+          serving as a strategic partner managing a significant portion of F&amp;G's investment portfolio.
+        </p>
+      </div>
+      <div class="facts-grid reveal">
         <div class="fact-item">
-          <div class="fact-icon">🏢</div>
+          <div class="fact-icon" aria-hidden="true">🏢</div>
           <div>
             <div class="fact-label">Headquarters</div>
             <div class="fact-value">Des Moines, Iowa</div>
           </div>
         </div>
         <div class="fact-item">
-          <div class="fact-icon">📅</div>
+          <div class="fact-icon" aria-hidden="true">📅</div>
           <div>
             <div class="fact-label">Founded</div>
             <div class="fact-value">1959</div>
           </div>
         </div>
         <div class="fact-item">
-          <div class="fact-icon">📈</div>
+          <div class="fact-icon" aria-hidden="true">📈</div>
           <div>
             <div class="fact-label">Stock Symbol</div>
             <div class="fact-value">NYSE: FG</div>
           </div>
         </div>
         <div class="fact-item">
-          <div class="fact-icon">🏛️</div>
+          <div class="fact-icon" aria-hidden="true">🏛️</div>
           <div>
             <div class="fact-label">Ownership</div>
             <div class="fact-value">Public — ~85% owned by FNF; Blackstone strategic partnership</div>
           </div>
         </div>
         <div class="fact-item">
-          <div class="fact-icon">📊</div>
+          <div class="fact-icon" aria-hidden="true">📊</div>
           <div>
             <div class="fact-label">2024 Earnings</div>
             <div class="fact-value">$657M adjusted net earnings (+22% YoY)</div>
           </div>
         </div>
         <div class="fact-item">
-          <div class="fact-icon">🛡️</div>
+          <div class="fact-icon" aria-hidden="true">🛡️</div>
           <div>
             <div class="fact-label">Portfolio Quality</div>
             <div class="fact-value">97% investment-grade fixed maturities</div>
           </div>
         </div>
         <div class="fact-item">
-          <div class="fact-icon">🗽</div>
+          <div class="fact-icon" aria-hidden="true">🗽</div>
           <div>
             <div class="fact-label">NY Issuing Company</div>
-            <div class="fact-value">Fidelity & Guaranty Life Insurance Company of New York</div>
+            <div class="fact-value">Fidelity &amp; Guaranty Life Insurance Company of New York</div>
           </div>
         </div>
         <div class="fact-item">
-          <div class="fact-icon">🇺🇸</div>
+          <div class="fact-icon" aria-hidden="true">🇺🇸</div>
           <div>
             <div class="fact-label">Other States</div>
-            <div class="fact-value">Fidelity & Guaranty Life Insurance Company</div>
+            <div class="fact-value">Fidelity &amp; Guaranty Life Insurance Company</div>
           </div>
         </div>
       </div>
@@ -641,55 +950,94 @@
   </section>
 
   <!-- Financial Strength Ratings -->
-  <section class="section" style="background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <section class="section" id="ratings" style="background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
     <div class="container">
-      <div class="section-label">Financial Strength</div>
-      <h2>Credit Ratings</h2>
-      <p class="section-intro">
-        F&G holds strong financial strength ratings from all four major rating agencies. In January 2024,
-        A.M. Best upgraded F&G from A- to A (Excellent).
-      </p>
-      <div class="ratings-table-wrap">
+      <div class="reveal">
+        <div class="section-label">Financial Strength</div>
+        <h2>Credit Ratings</h2>
+        <p class="section-intro">
+          F&amp;G holds strong financial strength ratings from all four major rating agencies. In January 2024,
+          A.M. Best upgraded F&amp;G from A- to A&nbsp;(Excellent).
+        </p>
+      </div>
+      <div class="ratings-table-wrap reveal">
         <div class="ratings-header">
-          <div class="shield-icon">🛡️</div>
+          <div class="shield-icon" aria-hidden="true">🛡️</div>
           <h3>Financial Strength Ratings</h3>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Rating Agency</th>
-              <th>Rating</th>
-              <th>Outlook</th>
-              <th>Meaning</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="font-weight:600;">A.M. Best</td>
-              <td><span class="rating-badge">A</span></td>
-              <td><span class="outlook-stable">Stable</span></td>
-              <td>Excellent</td>
-            </tr>
-            <tr>
-              <td style="font-weight:600;">S&P Global</td>
-              <td><span class="rating-badge">A-</span></td>
-              <td><span class="outlook-stable">Stable</span></td>
-              <td>Strong</td>
-            </tr>
-            <tr>
-              <td style="font-weight:600;">Fitch Ratings</td>
-              <td><span class="rating-badge">A-</span></td>
-              <td><span class="outlook-stable">Stable</span></td>
-              <td>Strong</td>
-            </tr>
-            <tr>
-              <td style="font-weight:600;">Moody's</td>
-              <td><span class="rating-badge">A3</span></td>
-              <td><span class="outlook-stable">Stable</span></td>
-              <td>Upper-Medium Grade</td>
-            </tr>
-          </tbody>
-        </table>
+
+        <!-- Desktop Table -->
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Rating Agency</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Outlook</th>
+                <th scope="col">Meaning</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight:600;">A.M. Best</td>
+                <td><span class="rating-badge">A</span></td>
+                <td><span class="outlook-stable">Stable</span></td>
+                <td>Excellent</td>
+              </tr>
+              <tr>
+                <td style="font-weight:600;">S&amp;P Global</td>
+                <td><span class="rating-badge">A-</span></td>
+                <td><span class="outlook-stable">Stable</span></td>
+                <td>Strong</td>
+              </tr>
+              <tr>
+                <td style="font-weight:600;">Fitch Ratings</td>
+                <td><span class="rating-badge">A-</span></td>
+                <td><span class="outlook-stable">Stable</span></td>
+                <td>Strong</td>
+              </tr>
+              <tr>
+                <td style="font-weight:600;">Moody's</td>
+                <td><span class="rating-badge">A3</span></td>
+                <td><span class="outlook-stable">Stable</span></td>
+                <td>Upper-Medium Grade</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mobile Rating Cards -->
+        <div class="rating-cards-mobile">
+          <div class="rating-card-m">
+            <div class="rating-card-m-badge"><span class="rating-badge">A</span></div>
+            <div class="rating-card-m-info">
+              <div class="rating-card-m-agency">A.M. Best</div>
+              <div class="rating-card-m-meta"><span class="outlook-stable">Stable</span> &nbsp;·&nbsp; Excellent</div>
+            </div>
+          </div>
+          <div class="rating-card-m">
+            <div class="rating-card-m-badge"><span class="rating-badge">A-</span></div>
+            <div class="rating-card-m-info">
+              <div class="rating-card-m-agency">S&amp;P Global</div>
+              <div class="rating-card-m-meta"><span class="outlook-stable">Stable</span> &nbsp;·&nbsp; Strong</div>
+            </div>
+          </div>
+          <div class="rating-card-m">
+            <div class="rating-card-m-badge"><span class="rating-badge">A-</span></div>
+            <div class="rating-card-m-info">
+              <div class="rating-card-m-agency">Fitch Ratings</div>
+              <div class="rating-card-m-meta"><span class="outlook-stable">Stable</span> &nbsp;·&nbsp; Strong</div>
+            </div>
+          </div>
+          <div class="rating-card-m">
+            <div class="rating-card-m-badge"><span class="rating-badge">A3</span></div>
+            <div class="rating-card-m-info">
+              <div class="rating-card-m-agency">Moody's</div>
+              <div class="rating-card-m-meta"><span class="outlook-stable">Stable</span> &nbsp;·&nbsp; Upper-Medium Grade</div>
+            </div>
+          </div>
+        </div>
+
         <div class="ratings-note">
           A.M. Best affirmed March 2025 (upgraded January 2024); all outlooks stable.
         </div>
@@ -698,15 +1046,17 @@
   </section>
 
   <!-- Product Portfolio -->
-  <section class="section">
+  <section class="section" id="products">
     <div class="container">
-      <div class="section-label">Product Suite</div>
-      <h2>Product Portfolio</h2>
-      <p class="section-intro">
-        A comprehensive range of Indexed Universal Life, Fixed Indexed Annuity, and Multi-Year Guaranteed Annuity
-        products designed for tax-advantaged retirement planning and wealth transfer.
-      </p>
-      <div class="products-grid">
+      <div class="reveal">
+        <div class="section-label">Product Suite</div>
+        <h2>Product Portfolio</h2>
+        <p class="section-intro">
+          A comprehensive range of Indexed Universal Life, Fixed Indexed Annuity, and Multi-Year Guaranteed Annuity
+          products designed for tax-advantaged retirement planning and wealth transfer.
+        </p>
+      </div>
+      <div class="products-grid reveal">
 
         <!-- IUL -->
         <div class="product-card">
@@ -735,7 +1085,7 @@
               <li><strong>Safe Income Advantage</strong> — Guaranteed lifetime withdrawal benefits</li>
               <li><strong>Pro Performance</strong> — Growth-oriented with multiple index strategies</li>
               <li><strong>Power Accumulator</strong> — ETF-based interest crediting</li>
-              <li><strong>AccumulatorPlus 7 & 10</strong> — Flexible multi-term accumulation</li>
+              <li><strong>AccumulatorPlus 7 &amp; 10</strong> — Flexible multi-term accumulation</li>
               <li>Minimum premiums from $10,000; floor guaranteed at 0%</li>
             </ul>
           </div>
@@ -749,7 +1099,7 @@
           </div>
           <div class="product-card-body">
             <ul>
-              <li><strong>Guarantee-Platinum 3, 5 & 7</strong> — Fixed rates for 3, 5, or 7 years</li>
+              <li><strong>Guarantee-Platinum 3, 5 &amp; 7</strong> — Fixed rates for 3, 5, or 7 years</li>
               <li>Premiums from $20,000 to $2.5 million (higher with approval)</li>
               <li>Tax-deferred growth with competitive guaranteed fixed rates</li>
             </ul>
@@ -761,51 +1111,53 @@
   </section>
 
   <!-- Why F&G -->
-  <section class="section" style="background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <section class="section" id="why" style="background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
     <div class="container">
-      <div class="section-label">The F&G Advantage</div>
-      <h2>Why F&G for Your Clients</h2>
-      <div class="why-grid" style="margin-top: 36px;">
+      <div class="reveal">
+        <div class="section-label">The F&amp;G Advantage</div>
+        <h2>Why F&amp;G for Your Clients</h2>
+      </div>
+      <div class="why-grid reveal" style="margin-top: 32px;">
         <div class="why-item">
-          <div class="why-icon">🛡️</div>
+          <div class="why-icon" aria-hidden="true">🛡️</div>
           <div>
             <h4>Financial Strength</h4>
             <p>A-rated by A.M. Best (upgraded Jan 2024) with stable outlooks from all four major agencies.</p>
           </div>
         </div>
         <div class="why-item">
-          <div class="why-icon">⏳</div>
+          <div class="why-icon" aria-hidden="true">⏳</div>
           <div>
             <h4>Proven Track Record</h4>
             <p>65+ years of protecting policyholders since 1959 with consistent, reliable performance.</p>
           </div>
         </div>
         <div class="why-item">
-          <div class="why-icon">📈</div>
+          <div class="why-icon" aria-hidden="true">📈</div>
           <div>
             <h4>Record Growth</h4>
             <p>$71+ billion AUM (record Q3 2025) and $15.3B in 2024 gross sales, demonstrating market confidence.</p>
           </div>
         </div>
         <div class="why-item">
-          <div class="why-icon">💎</div>
+          <div class="why-icon" aria-hidden="true">💎</div>
           <div>
             <h4>Investment Expertise</h4>
             <p>Strategic partnership with Blackstone for best-in-class portfolio management.</p>
           </div>
         </div>
         <div class="why-item">
-          <div class="why-icon">⚡</div>
+          <div class="why-icon" aria-hidden="true">⚡</div>
           <div>
             <h4>Product Innovation</h4>
             <p>Competitive IUL and FIA products with strong caps, flexible features, and multiple index options.</p>
           </div>
         </div>
         <div class="why-item">
-          <div class="why-icon">🗽</div>
+          <div class="why-icon" aria-hidden="true">🗽</div>
           <div>
             <h4>New York Availability</h4>
-            <p>Products available in NY through Fidelity & Guaranty Life Insurance Company of New York.</p>
+            <p>Products available in NY through Fidelity &amp; Guaranty Life Insurance Company of New York.</p>
           </div>
         </div>
       </div>
@@ -815,15 +1167,15 @@
   <!-- Bottom Line -->
   <section class="bottom-line">
     <div class="container">
-      <div class="bottom-line-inner">
+      <div class="bottom-line-inner reveal">
         <div class="section-label" style="color: var(--accent-gold-light);">Bottom Line</div>
         <h2>A Premier Carrier for Wealth Building</h2>
         <hr class="gold-rule">
         <p>
-          F&G Annuities & Life combines over six decades of insurance experience with the financial
+          F&amp;G Annuities &amp; Life combines over six decades of insurance experience with the financial
           backing of Fidelity National Financial and Blackstone's investment expertise. With an upgraded
-          A (Excellent) rating from A.M. Best, record assets under management exceeding $71 billion,
-          and a comprehensive suite of IUL, FIA, and MYGA products, F&G is a premier carrier choice
+          A&nbsp;(Excellent) rating from A.M. Best, record assets under management exceeding $71 billion,
+          and a comprehensive suite of IUL, FIA, and MYGA products, F&amp;G is a premier carrier choice
           for tax-advantaged retirement planning and wealth transfer strategies.
         </p>
       </div>
@@ -831,15 +1183,15 @@
   </section>
 
   <!-- Footer -->
-  <footer>
+  <footer id="contact">
     <div class="footer-inner">
       <div class="footer-brand">MMT Financial and Insurance</div>
       <div class="footer-motto">Educate. Protect. Wealth.</div>
-      <div class="footer-names">Marc H. Merritt, RVP &nbsp;|&nbsp; Marylene Teopengco-Merritt, RVP</div>
+      <div class="footer-names">Marc H. Merritt, RVP<span class="sep-pipe"> &nbsp;|&nbsp; </span>Marylene Teopengco-Merritt, RVP</div>
       <div class="footer-title">Freedom Equity Group</div>
       <div class="footer-contact">
-        <a href="tel:6466452453">(646) 645-2453</a> &nbsp;|&nbsp;
-        <a href="mailto:marc@mmtfininsurance.com">marc@mmtfininsurance.com</a> &nbsp;|&nbsp;
+        <a href="tel:6466452453">(646) 645-2453</a><span class="sep"> &nbsp;|&nbsp; </span>
+        <a href="mailto:marc@mmtfininsurance.com">marc@mmtfininsurance.com</a><span class="sep"> &nbsp;|&nbsp; </span>
         <a href="mailto:marylene@mmtfininsurance.com">marylene@mmtfininsurance.com</a>
       </div>
       <div class="footer-license">
@@ -849,5 +1201,63 @@
     </div>
   </footer>
 
+  <!-- Back to Top -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">↑</button>
+
+  <!-- JavaScript -->
+  <script>
+    // Sticky nav scroll shadow + back-to-top
+    const nav = document.getElementById('stickyNav');
+    const backBtn = document.getElementById('backToTop');
+    let ticking = false;
+
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollY = window.scrollY || window.pageYOffset;
+          nav.classList.toggle('scrolled', scrollY > 20);
+          backBtn.classList.toggle('show', scrollY > 500);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Back to top click
+    backBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Scroll reveal with IntersectionObserver
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    } else {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+    }
+
+    // Smooth scroll for nav links (accounts for sticky nav height)
+    document.querySelectorAll('.nav-links a[href^="#"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          const navH = nav.getBoundingClientRect().height;
+          const top = target.getBoundingClientRect().top + window.scrollY - navH - 12;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
 </body>
 </html>
